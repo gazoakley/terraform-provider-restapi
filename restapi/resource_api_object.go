@@ -2,10 +2,11 @@ package restapi
 
 import (
 	"fmt"
-	"github.com/hashicorp/terraform/helper/schema"
 	"log"
 	"strconv"
 	"strings"
+
+	"github.com/hashicorp/terraform/helper/schema"
 )
 
 func resourceRestApi() *schema.Resource {
@@ -74,6 +75,11 @@ func resourceRestApi() *schema.Resource {
 				Type:        schema.TypeMap,
 				Elem:        &schema.Schema{Type: schema.TypeString},
 				Description: "After data from the API server is read, this map will include k/v pairs usable in other terraform resources as readable objects. Currently the value is the golang fmt package's representation of the value (simple primitives are set as expected, but complex types like arrays and maps contain golang formatting).",
+				Computed:    true,
+			},
+			"api_body": &schema.Schema{
+				Type:        schema.TypeString,
+				Description: "The raw body of the HTTP response.",
 				Computed:    true,
 			},
 			"force_new": &schema.Schema{
