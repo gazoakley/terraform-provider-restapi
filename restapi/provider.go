@@ -1,6 +1,8 @@
 package restapi
 
 import (
+	"math"
+
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/hashicorp/terraform/terraform"
 )
@@ -104,6 +106,11 @@ func Provider() terraform.ResourceProvider {
 				DefaultFunc: schema.EnvDefaultFunc("REST_API_XSSI_PREFIX", nil),
 				Description: "Trim the xssi prefix from response string, if present, before parsing.",
 			},
+			"rate_limit": &schema.Schema{
+				Type:        schema.TypeFloat,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("REST_API_RATE_LIMIT", math.MaxFloat64),
+			},
 			"debug": &schema.Schema{
 				Type:        schema.TypeBool,
 				Optional:    true,
@@ -155,6 +162,7 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 		write_returns_object:  d.Get("write_returns_object").(bool),
 		create_returns_object: d.Get("create_returns_object").(bool),
 		xssi_prefix:           d.Get("xssi_prefix").(string),
+		rate_limit:            d.Get("rate_limit").(float64),
 		debug:                 d.Get("debug").(bool),
 	}
 
