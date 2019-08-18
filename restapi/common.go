@@ -19,7 +19,7 @@ func set_resource_state(obj *api_object, d *schema.ResourceData) {
 		api_data[k] = fmt.Sprintf("%v", v)
 	}
 	d.Set("api_data", api_data)
-	d.Set("api_body", obj.api_body)
+	d.Set("api_response", obj.api_response)
 }
 
 /* Using GetObjectAtKey, this function verifies the resulting

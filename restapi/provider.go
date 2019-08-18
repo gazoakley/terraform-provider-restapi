@@ -110,6 +110,7 @@ func Provider() terraform.ResourceProvider {
 				Type:        schema.TypeFloat,
 				Optional:    true,
 				DefaultFunc: schema.EnvDefaultFunc("REST_API_RATE_LIMIT", math.MaxFloat64),
+				Description: "Set this to limit the number of requests per second made to the API.",
 			},
 			"debug": &schema.Schema{
 				Type:        schema.TypeBool,

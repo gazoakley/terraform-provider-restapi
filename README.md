@@ -37,6 +37,7 @@ Have a look at the [examples directory](examples) for some use cases
 - `write_returns_object` (boolean, optional): Set this when the API returns the object created on all write operations (`POST`, `PUT`). This is used by the provider to refresh internal data structures. This can also be set with the environment variable `REST_API_WRO`.
 - `create_returns_object` (boolean, optional): Set this when the API returns the object created only on creation operations (`POST`). This is used by the provider to refresh internal data structures. This can also be set with the environment variable `REST_API_CRO`.
 - `xssi_prefix` (boolean, optional): Trim the xssi prefix from response string, if present, before parsing. This can also be set with the environment variable `REST_API_XSSI_PREFIX`.
+- `rate_limit` (float, optional): Set this to limit the number of requests per second made to the API.
 - `debug` (boolean, optional): Enabling this will cause lots of debug information to be printed to STDOUT by the API client. This can be gathered by setting `TF_LOG=1` environment variable. This can also be set with the environment variable `REST_API_DEBUG`.
 
 &nbsp;
@@ -55,7 +56,9 @@ Have a look at the [examples directory](examples) for some use cases
 
 This provider also exports the following parameters:
 - `id`: The ID of the object that is being managed.
-- `api_data`: After data from the API server is read, this map will include k/v pairs usable in other terraform resources as readable objects. Currently the value is the golang fmt package's representation of the value (simple primitives are set as expected, but complex types like arrays and maps contain golang formatting).
+- `api_data`: After data from the API server is read, this map will include k/v pairs usable in other Terraform resources as readable objects. Currently the value is the golang fmt package's representation of the value (simple primitives are set as expected, but complex types like arrays and maps contain golang formatting).
+- `api_response`: Contains the raw JSON response read back from the API server. Can be parsed with [`jsondecode`](https://www.terraform.io/docs/configuration/functions/jsondecode.html) to allow access to deeply nested data.
+- `create_response`: Contains the raw JSON response from the initial object creation - use when an API only returns required data during create. Can be parsed with [`jsondecode`](https://www.terraform.io/docs/configuration/functions/jsondecode.html) to allow access to deeply nested data.
 
 Note that the `*_path` elements are for very specific use cases where one might initially create an object in one location, but read/update/delete it on another path. For this reason, they allow for substitution to be done by the provider internally by injecting the `id` somewhere along the path. This is similar to terraform's substitution syntax in the form of `${variable.name}`, but must be done within the provider due to structure. The only substitution available is to replace the string `{id}` with the internal (terraform) `id` of the object as learned by the `id_attribute`.
 

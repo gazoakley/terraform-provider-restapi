@@ -37,9 +37,9 @@ type api_object struct {
 	id_attribute string
 
 	/* Set internally */
-	data     map[string]interface{} /* Data as managed by the user */
-	api_data map[string]interface{} /* Data as available from the API */
-	api_body string
+	data         map[string]interface{} /* Data as managed by the user */
+	api_data     map[string]interface{} /* Data as available from the API */
+	api_response string
 }
 
 // Make an api_object to manage a RESTful object in an API
@@ -155,7 +155,7 @@ func (obj *api_object) update_state(state string) error {
 	}
 
 	/* Store response body for parsing via jsondecode() */
-	obj.api_body = state
+	obj.api_response = state
 
 	/* A usable ID was not passed (in constructor or here),
 	   so we have to guess what it is from the data structure */
